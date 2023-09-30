@@ -14,14 +14,13 @@ sudo systemctl start mysqld
 sudo systemctl enable mysqld
 
 # Generate a temporary random password for the MySQL root user
-TEMP_ROOT_PASSWORD=$(sudo grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}')
+#TEMP_ROOT_PASSWORD=$(sudo grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}')
 
 # Set the MySQL root password non-interactively
 mysql_secure_installation <<EOF
+$MYSQL_ROOT_PASSWORD
+$MYSQL_ROOT_PASSWORD
 y
-$TEMP_ROOT_PASSWORD
-$MYSQL_ROOT_PASSWORD
-$MYSQL_ROOT_PASSWORD
 y
 y
 y
