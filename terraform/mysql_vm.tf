@@ -23,7 +23,7 @@ resource "google_compute_instance" "mysql-test" {
     }
   }
 
-  metadata_startup_script = "echo hi > /test.txt"
+  metadata_startup_script = "${file("install_mysql.sh")}"
 
   depends_on = [google_project_service.compute]
 
