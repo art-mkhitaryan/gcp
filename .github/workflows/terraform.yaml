@@ -17,8 +17,8 @@ jobs:
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
-		shell: bash
-	
+        shell: bash
+        
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -27,6 +27,10 @@ jobs:
         with:
           credentials_json: '${{ secrets.SERVICE_ACCOUNT_KEY }}'
           project_id: ${{ env.GCP_PROJECT_ID }}
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
