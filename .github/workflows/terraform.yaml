@@ -31,15 +31,8 @@ jobs:
           credentials_json: '${{ secrets.SERVICE_ACCOUNT_KEY }}'
           project_id: ${{ env.GCP_PROJECT_ID }}
           
-#      - uses: google-github-actions/setup-gcloud@v0
-#        with:
-#          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-#          project_id: ${{ env.GCP_PROJECT_ID }}
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-        with:
-           terraform_version: 1.0.8
 
       - name: Terraform Format
         id: fmt
