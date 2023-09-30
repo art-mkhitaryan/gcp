@@ -37,7 +37,7 @@ jobs:
           workload_identity_provider: 'projects/559303572017/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'tf-apply@avian-cosmos-400510.iam.gserviceaccount.com'
 
-      - uses: hashicorp/setup-terraform@v2
+      - uses: hashicorp/setup-terraform@v1
 
       - id: fmt
         name: Terraform fmt
