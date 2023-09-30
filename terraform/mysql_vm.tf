@@ -1,9 +1,9 @@
-# resource "google_project_service" "compute" {
-#   service = "compute.googleapis.com"
-# }
+resource "google_project_service" "compute" {
+  service = "compute.googleapis.com"
+}
 
 resource "google_compute_instance" "mysql-test" {
-  name         = "mysql-test1"
+  name         = "mysql-test"
   machine_type = "e2-small"
   zone         = "europe-west3-a"
 
@@ -25,6 +25,6 @@ resource "google_compute_instance" "mysql-test" {
 
   metadata_startup_script = "echo hi > /test.txt"
 
-#  depends_on = [google_project_service.compute]
+  depends_on = [google_project_service.compute]
 
 }
