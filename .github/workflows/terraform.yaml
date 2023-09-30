@@ -84,13 +84,13 @@ jobs:
     - name: Terraform Format
       env:
         TF_VAR_SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-        run: terraform fmt -check
+      run: terraform fmt -check
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       env:
         TF_VAR_SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-        run: terraform plan -input=false
+      run: terraform plan -input=false
 
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
@@ -101,5 +101,5 @@ jobs:
         TF_VAR_SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
         TF_VAR_mssql_login: ${{ secrets.MSSQL_LOGIN }}
         TF_VAR_mssql_login_pwd: ${{ secrets.MSSQL_LOGIN_PWD }}
-        run: terraform apply -auto-approve -input=false
+      run: terraform apply -auto-approve -input=false
 
