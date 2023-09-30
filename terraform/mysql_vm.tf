@@ -12,8 +12,8 @@ resource "google_compute_instance" "mysql-test" {
       image = "projects/rocky-linux-cloud/global/images/rocky-linux-9-optimized-gcp-v20230912"
       size  = 20
       type  = "pd-ssd"
-      }
     }
+  }
 
   network_interface {
     network = "default"
