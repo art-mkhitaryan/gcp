@@ -1,65 +1,61 @@
-name: Terraform Workflow Demo
+name: "Terraform CI/CD Backend"
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
     paths:
       - 'terraform/**'
-      - '.github/workflows/terraform.yaml'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
     paths:
       - 'terraform/**'
-      - '.github/workflows/terraform.yaml'
 
 jobs:
   terraform:
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-      pull-requests: 'write' #Needed to comment on the PR
+    name: "Terraform"
     runs-on: ubuntu-latest
+    env:
+      working-directory: terraform
+      GCP_PROJECT_ID: avian-cosmos-400510
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
     steps:
-      - uses: actions/checkout@v3
-      - id: 'plannerAuth'
-        if: github.ref != 'refs/heads/main'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v1.0.0'
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: google-github-actions/setup-gcloud@master
         with:
-          workload_identity_provider: 'projects/559303572017/locations/global/workloadIdentityPools/github/providers/github'
-          service_account: 'github-actions@avian-cosmos-400510.iam.gserviceaccount.com'
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          project_id: ${{ env.GCP_PROJECT_ID }}
 
-      - id: 'applierAuth'
-        if: github.ref == 'refs/heads/main'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v1.0.0'
-        with:
-          workload_identity_provider: 'projects/559303572017/locations/global/workloadIdentityPools/github/providers/github'
-          service_account: 'tf-apply@avian-cosmos-400510.iam.gserviceaccount.com'
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        # with:
+        #   terraform_version: 1.0.8
 
-      - uses: hashicorp/setup-terraform@v1
-
-      - id: fmt
-        name: Terraform fmt
-        working-directory: terraform
+      - name: Terraform Format
+        id: fmt
         run: terraform fmt -check
+        continue-on-error: true
 
-      - id: init
-        name: Terraform Init
-        working-directory: terraform
-        run: terraform init # -input=false -backend-config="prefix=terraform-demo" -backend-config="gcp_tfstate-bucket"
-
-      - id: validate
-        name: Terraform Validate
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      
+      - name: Terraform Validate
+        id: validate
         run: terraform validate -no-color
 
-      - id: plan
-        name: Terraform Plan
-        working-directory: terraform
+      - name: Terraform Plan
+        id: plan
+        if: github.event_name == 'pull_request'
         run: terraform plan -no-color
         continue-on-error: true
 
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@0.9.0
         if: github.event_name == 'pull_request'
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
@@ -73,26 +69,25 @@ jobs:
             
             <details><summary>Show Plan</summary>
             
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
+            \`\`\`${process.env.PLAN}\`\`\`
             
             </details>
             
-            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-            
-            github.rest.issues.createComment({
+            Results for commit: ${{ github.event.pull_request.head.sha }}
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.working-directory }}\`, Workflow: \`${{ github.workflow }}\`*`;
+              
+            github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: output
             })
-
+            
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        working-directory: terraform
-        run: terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve
