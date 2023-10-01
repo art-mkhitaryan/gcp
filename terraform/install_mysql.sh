@@ -2,32 +2,22 @@
 
 # Define the MySQL root password (change this to your desired password)
 MYSQL_ROOT_PASSWORD='${{ secrets.MYSQL_SECRET }}'
+echo $MYSQL_ROOT_PASSWORD >> /var/log/install_mysql_script.log
 
-# Install MySQL Server non-interactively
-echo "Installing MySQL Server..."
-sudo dnf install -y mysql-server
+# Install MySQL Server
+yum install -y mysql-server
 
-# Start the MySQL service
-sudo systemctl start mysqld
+# Start MySQL Service
+systemctl start mysqld
 
-# Enable MySQL to start on boot
-sudo systemctl enable mysqld
+# Enable MySQL Service to start on boot
+systemctl enable mysqld
 
-# Generate a temporary random password for the MySQL root user
-#TEMP_ROOT_PASSWORD=$(sudo grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}')
+# Set the MySQL root password noninteractively
+mysqladmin -u root password "$MYSQL_ROOT_PASSWORD"
 
-# Set the MySQL root password non-interactively
-mysql_secure_installation <<EOF
-$MYSQL_ROOT_PASSWORD
-$MYSQL_ROOT_PASSWORD
-y
-y
-y
-y
-y
-EOF
+# Restart MySQL Service
+systemctl restart mysqld
 
-# Display MySQL version and status
-echo "MySQL installation completed."
-mysql --version
-sudo systemctl status mysqld
+# Print installation completion message
+echo "MySQL Server installation is complete."
