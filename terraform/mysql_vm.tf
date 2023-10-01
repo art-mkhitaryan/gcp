@@ -28,8 +28,18 @@ resource "google_compute_instance" "mysql-test" {
     }
   }
  
-  metadata_startup_script = "${file("install_mysql.sh")}"
-  
+  metadata = {
+    startup-script = <<-EOF
+  #!/bin/bash
+  MYSQL_ROOT_PASSWORD=${data.google_secret_manager_secret_version.passwd.secret_data}
+  echo $MYSQL_ROOT_PASSWORD >> /var/log/install_mysql_script.log
+  dnf install -y mysql-server
+  systemctl start mysqld
+  systemctl enable mysqld
+  mysqladmin -u root password "$MYSQL_ROOT_PASSWORD"
+  systemctl restart mysqld
+  EOF
+  }
   depends_on = [google_project_service.compute]
 
 }
