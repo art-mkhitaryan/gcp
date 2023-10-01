@@ -4,15 +4,20 @@ resource "google_secret_manager_secret" "mysql_secret" {
   replication {
     auto {}
   }
+  depends_on = [google_project_service.secretmanager]
 }
 
 resource "google_secret_manager_secret_version" "mysql_secret" {
   secret = google_secret_manager_secret.mysql_secret.id
   secret_data = var.mysql_secret
+
+  depends_on = [google_secret_manager_secret.mysql_secret]
 }
 
 data "google_secret_manager_secret_version" "mysql_secret" {
  secret   = "mysql_secret"
+
+ depends_on = [google_secret_manager_secret_version.mysql_secret]
 }
 
 resource "google_compute_instance" "mysql_01" {
