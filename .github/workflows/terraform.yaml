@@ -15,6 +15,8 @@ on:
 env: 
   TF_LOG: INFO
   TF_VAR_mysql_secret: ${{ secrets.MYSQL_SECRET }}
+  TF_VAR_gcp_project: ${{ secrets.GCP_PROJECT_ID }}
+
 
 jobs:
   terraform:
@@ -59,7 +61,7 @@ jobs:
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ secrets.GIT_TOKEN }}
         script: |
           const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`

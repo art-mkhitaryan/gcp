@@ -20,8 +20,8 @@ data "google_secret_manager_secret_version" "mysql_secret" {
  depends_on = [google_secret_manager_secret_version.mysql_secret]
 }
 
-resource "google_compute_instance" "mysql_01" {
-  name         = "mysql_01"
+resource "google_compute_instance" "mysql01" {
+  name         = "mysql01"
   machine_type = "e2-small"
   zone         = "europe-west3-a"
 

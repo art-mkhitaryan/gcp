@@ -1,5 +1,5 @@
 provider "google" {
-  project     = "avian-cosmos-400510"
+  project     = var.gcp_project
   region      = "europe-west3"
 }
 
