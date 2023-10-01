@@ -1,23 +1,20 @@
 resource "google_secret_manager_secret" "mysql_secret" {
-  secret_id = "secret-version"
+  secret_id = "mysql_secret"
 
 }
 
 resource "google_secret_manager_secret_version" "mysql_secret" {
   secret = google_secret_manager_secret.mysql_secret.id
+  secret_data = var.mysql_secret
+}
 
-  secret_data = ${{ MYSQL_SECRET }}
+data "google_secret_manager_secret_version" "mysql_secret" {
+ secret   = "mysql_secret"
 }
 
 resource "google_project_service" "compute" {
   service = "compute.googleapis.com"
 }
-
-
-data "google_secret_manager_secret_version" "mysql_secret" {
- secret   = "MYSQL_SECRET"
-}
-
 
 resource "google_compute_instance" "mysql-test" {
   name         = "mysql-test"
@@ -39,7 +36,7 @@ resource "google_compute_instance" "mysql-test" {
   metadata = {
     startup-script = <<-EOF
   #!/bin/bash
-  MYSQL_ROOT_PASSWORD=${data.google_secret_manager_secret_version.passwd.secret_data}
+  MYSQL_ROOT_PASSWORD=${data.google_secret_manager_secret_version.mysql_secret.secret_data}
   dnf install -y mysql-server
   systemctl start mysqld
   systemctl enable mysqld
@@ -49,5 +46,7 @@ resource "google_compute_instance" "mysql-test" {
   }
 
   depends_on = [google_project_service.compute]
+  depends_on = [google_secret_manager_secret_version.mysql_secret]
+
 
 }
