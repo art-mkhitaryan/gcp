@@ -34,7 +34,8 @@ resource "google_compute_instance" "mysql01" {
   }
 
   network_interface {
-    network = "main"
+    network = google_compute_network.main.name
+    subnetwork = google_compute_subnetwork.private.name
   }
  
   metadata = {
