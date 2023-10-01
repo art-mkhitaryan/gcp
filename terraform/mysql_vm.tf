@@ -1,11 +1,23 @@
-# read latest password version from secret manager
-data "google_secret_manager_secret_version" "passwd" {
- secret   = "MYSQL_ROOT_PASSWORD"
+resource "google_secret_manager_secret" "mysql_secret" {
+  secret_id = "secret-version"
+
+}
+
+resource "google_secret_manager_secret_version" "mysql_secret" {
+  secret = google_secret_manager_secret.mysql_secret.id
+
+  secret_data = ${{ MYSQL_SECRET }}
 }
 
 resource "google_project_service" "compute" {
   service = "compute.googleapis.com"
 }
+
+
+data "google_secret_manager_secret_version" "mysql_secret" {
+ secret   = "MYSQL_SECRET"
+}
+
 
 resource "google_compute_instance" "mysql-test" {
   name         = "mysql-test"
@@ -21,18 +33,13 @@ resource "google_compute_instance" "mysql-test" {
   }
 
   network_interface {
-    network = "default"
-
-    access_config {
-      // Ephemeral public IP
-    }
+    network = "main"
   }
  
   metadata = {
     startup-script = <<-EOF
   #!/bin/bash
   MYSQL_ROOT_PASSWORD=${data.google_secret_manager_secret_version.passwd.secret_data}
-  echo $MYSQL_ROOT_PASSWORD >> /var/log/install_mysql_script.log
   dnf install -y mysql-server
   systemctl start mysqld
   systemctl enable mysqld
@@ -40,6 +47,7 @@ resource "google_compute_instance" "mysql-test" {
   systemctl restart mysqld
   EOF
   }
+
   depends_on = [google_project_service.compute]
 
 }
