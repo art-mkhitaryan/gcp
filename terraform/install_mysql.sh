@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the MySQL root password (change this to your desired password)
-MYSQL_ROOT_PASSWORD='${{ secrets.MYSQL_SECRET }}'
+MYSQL_ROOT_PASSWORD='$(gcloud secrets versions access latest --secret=MYSQL_ROOT_PASSWORD)'
 echo $MYSQL_ROOT_PASSWORD >> /var/log/install_mysql_script.log
 
 # Install MySQL Server
