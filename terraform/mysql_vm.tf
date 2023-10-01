@@ -1,6 +1,9 @@
 resource "google_secret_manager_secret" "mysql_secret" {
   secret_id = "mysql_secret"
-
+  
+  replication {
+    auto {}
+  }
 }
 
 resource "google_secret_manager_secret_version" "mysql_secret" {
