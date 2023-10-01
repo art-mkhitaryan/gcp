@@ -16,8 +16,8 @@ resource "google_project_service" "compute" {
   service = "compute.googleapis.com"
 }
 
-resource "google_compute_instance" "mysql-test" {
-  name         = "mysql-test"
+resource "google_compute_instance" "mysql_01" {
+  name         = "mysql_01"
   machine_type = "e2-small"
   zone         = "europe-west3-a"
 
