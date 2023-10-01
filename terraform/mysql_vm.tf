@@ -50,5 +50,5 @@ resource "google_compute_instance" "mysql01" {
   }
 
   depends_on = [google_secret_manager_secret_version.mysql_secret]
-
+  
 }
