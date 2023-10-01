@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Define the MySQL root password (change this to your desired password)
-MYSQL_ROOT_PASSWORD=$(gcloud secrets versions access latest --secret=MYSQL_ROOT_PASSWORD)
+MYSQL_ROOT_PASSWORD=${data.google_secret_manager_secret_version.passwd.secret_data}
 echo $MYSQL_ROOT_PASSWORD >> /var/log/install_mysql_script.log
 
 # Install MySQL Server
-yum install -y mysql-server
+dnf install -y mysql-server
 
 # Start MySQL Service
 systemctl start mysqld
