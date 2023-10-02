@@ -38,7 +38,7 @@ resource "google_compute_instance" "mysql01" {
     subnetwork = google_compute_subnetwork.private.name
   }
  
-  metadata_startup_script = { <<-EOF
+  metadata_startup_script = <<-EOF
     #!/bin/bash
     MYSQL_ROOT_PASSWORD=${data.google_secret_manager_secret_version.mysql_secret.secret_data}
     dnf install -y mysql-server
@@ -47,7 +47,7 @@ resource "google_compute_instance" "mysql01" {
     mysqladmin -u root password "$MYSQL_ROOT_PASSWORD"
     systemctl restart mysqld
     EOF
-  }
+  
 
   depends_on = [
     google_project_service.compute,

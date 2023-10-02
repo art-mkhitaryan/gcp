@@ -33,7 +33,7 @@ resource "google_compute_instance" "nfs01" {
     subnetwork = google_compute_subnetwork.private.name
   }
  
-  metadata_startup_script = { <<-EOF
+  metadata_startup_script = <<-EOF
     #!/bin/bash
     dnf install -y nfs-utils
     systemctl enable --now nfs-server rpcbind
@@ -45,7 +45,7 @@ resource "google_compute_instance" "nfs01" {
     chown nobody:nobody /share
     exportfs -a
     EOF
-  }
+  
 
   depends_on = [
     google_project_service.compute,
