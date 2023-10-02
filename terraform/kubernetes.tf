@@ -28,7 +28,7 @@ resource "google_container_cluster" "primary" {
   }
 
   workload_identity_config {
-    workload_pool = $(var.gcp_project.svc.id.goog)
+    workload_pool = "avian-cosmos-400510.svc.id.goog"
   }
 
   ip_allocation_policy {
