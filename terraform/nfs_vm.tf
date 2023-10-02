@@ -33,19 +33,18 @@ resource "google_compute_instance" "nfs01" {
     subnetwork = google_compute_subnetwork.private.name
   }
  
-  metadata = {
-    startup-script = <<-EOF
-  #!/bin/bash
-  dnf install -y nfs-utils
-  systemctl enable --now nfs-server rpcbind
-  firewall-cmd --add-service={nfs,nfs3,mountd,rpc-bind} --permanent 
-  firewall-cmd --reload
-  mkdir /share
-  echo "/share 10.0.0.0/8(rw,sync,no_subtree_check)" > /etc/exports
-  echo "192.168.197.128:/share /mnt/nfs nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0" >> /etc/fstab
-  chown nobody:nobody /share
-  exportfs -a
-  EOF
+  metadata_startup_script = { <<-EOF
+    #!/bin/bash
+    dnf install -y nfs-utils
+    systemctl enable --now nfs-server rpcbind
+    firewall-cmd --add-service={nfs,nfs3,mountd,rpc-bind} --permanent 
+    firewall-cmd --reload
+    mkdir /share
+    echo "/share 10.0.0.0/8(rw,sync,no_subtree_check)" > /etc/exports
+    echo "192.168.197.128:/share /mnt/nfs nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0" >> /etc/fstab
+    chown nobody:nobody /share
+    exportfs -a
+    EOF
   }
 
   depends_on = [
