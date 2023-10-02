@@ -1,16 +1,16 @@
 ---
-name: Build and Push Laravel Image to Google Cloud Platform
+name: Build and Push Docusaurus Image to Google Cloud Platform
 on: 
   push: 
     branches:
     - main
     paths:
-    - laravel-app/**
+    - docusaurus-app/**
   pull_request:
     branches:
     - main
     paths:
-    - laravel-app/**
+    - docusaurus-app/**
 
 jobs:
   build-push-gcr:
@@ -19,9 +19,9 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./laravel-app
+        working-directory: ./docusaurus-app
     env:
-      IMAGE_NAME: laravel-app
+      IMAGE_NAME: docusaurus-app
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
     steps:
     - name: Checkout
@@ -38,7 +38,7 @@ jobs:
     - name: Automatic Tagging of Releases
       id: increment-git-tag
       run: |
-        bash ./scripts/git_update.sh -v patch
+        bash ../scripts/git_update.sh -v patch
 
     - name: Configure Docker Client
       run: |-
