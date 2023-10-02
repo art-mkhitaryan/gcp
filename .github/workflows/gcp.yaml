@@ -16,6 +16,11 @@ jobs:
   build-push-gcr:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        # We keep Terraform files in the terraform directory.
+        working-directory: ./laravel-app
     env:
       IMAGE_NAME: laravel-app
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}

@@ -1,3 +1,8 @@
+resource "google_project_service" "container_registry" {
+  service = "containerregistry.googleapis.com"
+  disable_on_destroy = false
+}
+
 resource "google_container_registry" "gcr-eu" {
   project = var.gcp_project
   location = "EU"
