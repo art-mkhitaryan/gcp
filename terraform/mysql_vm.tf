@@ -50,6 +50,10 @@ resource "google_compute_instance" "mysql01" {
   EOF
   }
 
-  depends_on = [google_secret_manager_secret_version.mysql_secret]
-  
+  depends_on = [
+    google_project_service.compute,
+    google_compute_subnetwork.private,
+    google_compute_network.main,
+    google_secret_manager_secret_version.mysql_secret
+  ]
 }
