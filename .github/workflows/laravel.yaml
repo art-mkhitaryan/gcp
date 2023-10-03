@@ -62,3 +62,13 @@ jobs:
         docker tag $IMAGE_NAME:latest europe-west3-docker.pkg.dev/$PROJECT_ID/gar-eu-repo/$IMAGE_NAME:$GIT_TAG
         docker push europe-west3-docker.pkg.dev/$PROJECT_ID/gar-eu-repo/$IMAGE_NAME:latest
         docker push europe-west3-docker.pkg.dev/$PROJECT_ID/gar-eu-repo/$IMAGE_NAME:$GIT_TAG
+
+    - name: Prep and Deploy to GKE
+      run: |
+        gcloud components install gke-gcloud-auth-plugin
+        gcloud container clusters get-credentials primary --zone europe-west3-a --project ${{ secrets.GCP_PROJECT_ID }}
+
+    # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      run: |-
+        kubectl apply -f ../k8s/deployment.yaml

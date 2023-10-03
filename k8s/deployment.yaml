@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-deployment
+spec:
+  replicas: 1 # Adjust the number of desired replicas as needed
+  selector:
+    matchLabels:
+      app: laravel-app
+  template:
+    metadata:
+      labels:
+        app: laravel-app
+    spec:
+      containers:
+        - name: laravel-app
+          image: europe-west3-docker.pkg.dev/avian-cosmos-400510/gar-eu-repo/laravel-app:latest
+          volumeMounts:
+            - name: nfs-volume
+              mountPath: /var/www
+      volumes:
+        - name: nfs-volume
+          persistentVolumeClaim:
+            claimName: nfs-pvc
