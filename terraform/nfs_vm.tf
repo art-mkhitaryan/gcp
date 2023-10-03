@@ -52,4 +52,5 @@ resource "google_compute_instance" "nfs01" {
     google_compute_subnetwork.private,
     google_compute_network.main,
   ]
+  
 }
