@@ -1,3 +1,7 @@
+resource "google_project_service" "secretmanager" {
+  service  = "secretmanager.googleapis.com"
+}
+
 resource "google_secret_manager_secret" "mysql_secret" {
   secret_id = "mysql_secret"
   
