@@ -6,5 +6,3 @@ spec:
   containers:
     - name: nginx
       image: gcr.io/avian-cosmos-400510/docusaurus-app
-  # imagePullSecrets:
-  # - name: gcr-json-key

@@ -76,4 +76,4 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        kubectl apply -f ../k8s/deployment.yaml
+        kubectl apply -f ../k8s/nginx.yaml
