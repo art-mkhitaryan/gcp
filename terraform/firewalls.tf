@@ -1,12 +1,12 @@
-resource "google_compute_firewall" "allow-ssh" {
-  name    = "allow-ssh"
+resource "google_compute_firewall" "allow-all-from-main-network" {
+  name    = "allow-all-from-main-network"
   network = google_compute_network.main.name
 
   allow {
-    protocol = "tcp"
-    ports    = ["22"]
+    protocol = "all"
+    ports    = []
   }
 
-   source_ranges = ["141.136.90.244/32"]
+   source_ranges = ["141.136.90.244/32" , "10.0.0.0/8"]
    
 }

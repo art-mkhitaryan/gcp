@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: external-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: external-ingress-ip
+    networking.gke.io/managed-certificates: "example-certificate-abc,example-certificate-xyz" #mention the multiple paths name here
+spec:
+  rules:
+  - host: abc.searce.tk
+    http:
+      paths:
+      - backend:
+          serviceName: my-mc-service
+          servicePort: my-first-port
+  - host: xyz.searce.tk
+    http:
+      paths:
+      - backend:
+          serviceName: my-mc-service
+          servicePort: my-second-port

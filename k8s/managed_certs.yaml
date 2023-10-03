@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: example-certificate-abc
+spec:
+  domains:
+    - abc.searce.tk
+    - application.ucraft.app
