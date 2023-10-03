@@ -1,9 +1,5 @@
 FROM node:18.18.0-slim as builder
 
-# Reduce npm log spam and colour during install within Docker
-ENV NPM_CONFIG_LOGLEVEL=warn
-ENV NPM_CONFIG_COLOR=false
-
 RUN npx create-docusaurus@latest app classic
 
 WORKDIR /app
