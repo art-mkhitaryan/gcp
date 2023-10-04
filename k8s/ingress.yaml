@@ -1,21 +1,42 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: https-redirect
+spec:
+  redirectToHttps:
+    enabled: true
+    responseCodeName: RESPONSE_CODE
+
+---
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: external-ingress
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: external-ingress-ip
-    networking.gke.io/managed-certificates: "example-certificate-abc,example-certificate-xyz" #mention the multiple paths name here
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.allow-http: "true"
+    networking.gke.io/v1beta1.FrontendConfig: https-redirect
+    ingress.gcp.kubernetes.io/pre-shared-cert: "docusaurus_ucraft_app,application_ucraft_app"
+    kubernetes.io/ingress.global-static-ip-name: ucraft-app-ip
 spec:
   rules:
-  - host: abc.searce.tk
-    http:
+  - host: "application.ucraft.app"
+     http:
       paths:
-      - backend:
-          serviceName: my-mc-service
-          servicePort: my-first-port
-  - host: xyz.searce.tk
-    http:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ucraft-app-service
+            port:
+              number: 60001
+  - host: "docusaurus.ucraft.app"
+     http:
       paths:
-      - backend:
-          serviceName: my-mc-service
-          servicePort: my-second-port
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ucraft-app-service
+            port:
+              number: 60002

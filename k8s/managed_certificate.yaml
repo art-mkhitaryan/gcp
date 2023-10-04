@@ -1,0 +1,16 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: application_ucraft_app
+spec:
+  domains:
+    - application.ucraft.app
+  
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: docusaurus_ucraft_app
+spec:
+  domains:
+    - docusaurus.ucraft.app
