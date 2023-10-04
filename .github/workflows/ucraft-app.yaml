@@ -21,8 +21,8 @@ jobs:
         shell: bash
         working-directory: ./ucraft-app
     env:
-      IMAGE_NAME1: laravel-app
-      IMAGE_NAME2: docusaurus-app
+      IMAGE_NAME_1: laravel-app
+      IMAGE_NAME_2: docusaurus-app
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
     steps:
     - name: Checkout
