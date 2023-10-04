@@ -23,3 +23,11 @@ resource "google_compute_address" "nat" {
 
   depends_on = [google_project_service.compute]
 }
+
+resource "google_compute_address" "ucraft-app-ip" {
+  name         = "ucraft-app-ip"
+  address_type = "EXTERNAL"
+  network_tier = "PREMIUM"
+
+  depends_on = [google_project_service.compute]
+}
