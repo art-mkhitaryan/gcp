@@ -24,10 +24,14 @@ resource "google_compute_address" "nat" {
   depends_on = [google_project_service.compute]
 }
 
-resource "google_compute_address" "ucraft-app-ip" {
-  name         = "ucraft-app-ip"
-  address_type = "EXTERNAL"
-  network_tier = "PREMIUM"
+# resource "google_compute_global_address" "ucraft-app-ip" {
+#   name         = "ucraft-app-ip"
+#   address_type = "EXTERNAL"
+#   depends_on = [google_project_service.compute]
+# }
 
-  depends_on = [google_project_service.compute]
-}
+# resource "google_compute_global_address" "http-ucraft-app-ip" {
+#   name         = "http-ucraft-app-ip"
+#   address_type = "EXTERNAL"
+#   depends_on = [google_project_service.compute]
+# }

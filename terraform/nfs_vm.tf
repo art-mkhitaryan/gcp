@@ -41,7 +41,6 @@ resource "google_compute_instance" "nfs01" {
     firewall-cmd --reload
     mkdir /share
     echo "/share *(rw,sync,no_subtree_check)" > /etc/exports
-    echo "$(hostname):/share /mnt/nfs nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0" >> /etc/fstab
     chown nobody:nobody /share
     exportfs -a
     EOF
