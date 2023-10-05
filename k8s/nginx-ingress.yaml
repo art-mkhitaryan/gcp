@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ing
+  namespace: default
+  annotations:
+    cert-manager.io/issuer: letsencrypt-http01-prod
+spec:
+  ingressClassName: external-nginx
+  tls:
+  - hosts:
+    - docusaurus.cloudsysops.com
+    - application.cloudsysops.com
+    secretName: cloudsysops-com-key-pair
+
+  rules:
+  - host: application.cloudsysops.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ucraft-app-service
+            port:
+              number: 60001
+  - host: docusaurus.cloudsysops.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ucraft-app-service
+            port:
+              number: 60002

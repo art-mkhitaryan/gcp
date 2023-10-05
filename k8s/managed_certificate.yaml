@@ -4,7 +4,7 @@ metadata:
   name: application-ucraft-app
 spec:
   domains:
-    - application.ucraft.app
+    - application.cloudsysops.com
   
 ---
 apiVersion: networking.gke.io/v1
@@ -13,4 +13,4 @@ metadata:
   name: docusaurus-ucraft-app
 spec:
   domains:
-    - docusaurus.ucraft.app
+    - docusaurus.cloudsysops.com

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ucraft-app-deployment
+  name: laravel-app-deployment
 spec:
   replicas: 1 # Adjust the number of desired replicas as needed
   selector:
@@ -13,15 +13,10 @@ spec:
         app: ucraft-app
     spec:
       containers:
-        - name: docusaurus-app
-          image: europe-west3-docker.pkg.dev/avian-cosmos-400510/gar-eu-repo/docusaurus-app:latest
-          ports:
-          - containerPort: 80
-
         - name: laravel-app
           image: europe-west3-docker.pkg.dev/avian-cosmos-400510/gar-eu-repo/laravel-app:latest
           ports:
-          - containerPort: 9001
+          - containerPort: 9000
           volumeMounts:
             - name: nfs-volume
               mountPath: /mnt/nfs
