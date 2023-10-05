@@ -26,6 +26,6 @@ WORKDIR /var/www
 
 RUN composer install
 
-CMD php artisan serve --host=0.0.0.0 --port=9001
+CMD php artisan serve --host=0.0.0.0 --port=9000
 
-EXPOSE 9001
+EXPOSE 9000
