@@ -13,6 +13,7 @@ spec:
     path: "/share"   # NFS share location
 
 ---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
