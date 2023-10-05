@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: php-ini-config
+data:
+  php.ini: |
+    foo=bar
+    one=two
