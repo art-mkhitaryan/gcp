@@ -1,0 +1,25 @@
+resources:
+- ../../base
+
+namespace: dev
+
+commonLabels:
+  app: dev-ucraft-app
+  env: dev
+
+patches:
+  - target:
+      kind: Ingress
+      name: nginx-ing
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: dev-docusaurus.cloudsysops.com
+      - op: replace
+        path: /spec/rules/1/host
+        value: dev-application.cloudsysops.com
+      - op: replace
+        path: /spec/tls/0/hosts
+        value: 
+          - dev-docusaurus.cloudsysops.com
+          - dev-application.cloudsysops.com

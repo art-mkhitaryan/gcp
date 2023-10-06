@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv
+spec:
+  storageClassName: manual # same storage class as pvc
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: nfs01.europe-west3-a.c.avian-cosmos-400510.internal # NFS server IP address 
+    path: "/share"   # NFS share location
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany #  must be the same as PersistentVolume
+  resources:
+    requests:
+      storage: 600Mi

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-app-deployment
+spec:
+  replicas: 1 # Adjust the number of desired replicas as needed
+  selector:
+    matchLabels:
+      app: ucraft-app
+  template:
+    metadata:
+      labels:
+        app: ucraft-app
+    spec:
+      containers:
+        - name: laravel-app
+          image: europe-west3-docker.pkg.dev/avian-cosmos-400510/gar-eu-repo/laravel-app:latest
+          ports:
+          - containerPort: 9000
+          env:
+          - name: PHP_INI_PATH
+            value: /usr/local/etc/php/php.ini
+          volumeMounts:
+            - name: nfs-volume
+              mountPath: /mnt/nfs
+            - name: config-volume
+              mountPath: /usr/local/etc/php
+      volumes:
+        - name: nfs-volume
+          persistentVolumeClaim:
+            claimName: nfs-pvc
+        - name: config-volume
+          configMap:
+            name: php-ini-config

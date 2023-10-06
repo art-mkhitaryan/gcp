@@ -1,0 +1,13 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- configmap-php-ini.yaml
+- docusaurus-app-deployment.yaml
+- laravel-app-deployment.yml
+- letsencrypt-prod-http01-issuer.yaml
+- nginx-ingress.yaml
+- node_port.yaml
+- pv_pvc.yaml
+
