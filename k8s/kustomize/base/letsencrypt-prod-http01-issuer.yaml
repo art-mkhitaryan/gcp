@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-http01-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: artur.mkhitaryan@outlook.com
+    privateKeySecretRef:
+      name: letsencrypt-prod-http01-key-pair
+    solvers:
+    - http01:
+        ingress:
+          class: external-nginx

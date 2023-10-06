@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docusaurus-app-deployment
+spec:
+  replicas: 1 # Adjust the number of desired replicas as needed
+  selector:
+    matchLabels:
+      app: ucraft-app
+  template:
+    metadata:
+      labels:
+        app: ucraft-app
+    spec:
+      containers:
+        - name: docusaurus-app
+          image: europe-west3-docker.pkg.dev/avian-cosmos-400510/gar-eu-repo/docusaurus-app:latest
+          ports:
+          - containerPort: 80

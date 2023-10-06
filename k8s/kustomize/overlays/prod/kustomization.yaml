@@ -1,0 +1,25 @@
+resources:
+- ../../base
+
+namespace: prod
+
+commonLabels:
+  app: prod-ucraft-app
+  env: prod
+
+# patches:
+#   - target:
+#       kind: Ingress
+#       name: nginx-ing
+#     patch: |-
+#       - op: replace
+#         path: /spec/rules/0/host
+#         value: docusaurus.cloudsysops.com
+#       - op: replace
+#         path: /spec/rules/1/host
+#         value: application.cloudsysops.com
+#       - op: replace
+#         path: /spec/tls/0/hosts
+#         value: 
+#           - docusaurus.cloudsysops.com
+#           - application.cloudsysops.com
